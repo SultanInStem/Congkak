@@ -36,8 +36,7 @@ public class Frame extends JFrame {
 
     public Frame(Player player1, Player player2){
         this.setVisible(true);
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        this.setSize((int)screenSize.getWidth(), (int)screenSize.getHeight());
+        this.setSize(Const.WINDOW_WIDTH, Const.WINDOW_HEIGHT);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(new BorderLayout());
         this.setTitle("Congkak game!");
@@ -159,6 +158,7 @@ public class Frame extends JFrame {
     public void displayWinner(){
         this.remove(mainGrid);
         this.add(winnerWindow, BorderLayout.CENTER);
+        this.repaint();
     }
     public void displayError(String errMessage, Hole[][]board){
         for(int i = 0; i < board.length; i++){

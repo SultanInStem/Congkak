@@ -17,14 +17,14 @@ public class WinnerWindow extends JPanel {
         top.setVisible(true);
         top.setOpaque(true);
 
-
         bottom = new JPanel();
         bottom.setVisible(true);
         bottom.setOpaque(true);
 
         playAgain = new JButton();
         quit = new JButton();
-        
+
+        this.setBackground(Color.YELLOW);
         this.add(top, BorderLayout.NORTH);
         this.add(bottom, BorderLayout.SOUTH);
     }

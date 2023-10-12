@@ -1,7 +1,7 @@
 import Constants.Const;
 
 public class Game {
-    private final int REFRESH_DELAY = 1000;
+    private final int REFRESH_DELAY = 800;
     private boolean isPlayer1 = true;
     private boolean isPlaying;
     private Frame frame;
@@ -25,6 +25,7 @@ public class Game {
         while(isPlaying){
             if(isGameOver(isPlayer1)){ // check if the game is over 
                 frame.displayWinner();
+                break;
             }
 
 
@@ -115,13 +116,15 @@ public class Game {
                 marbles = hole.getMarbles(); 
                 player2.setCurrentMarbles(marbles);
                 hole.emptyAllMarbles(); 
-
+                System.out.println("Hole id: " + holeId);
                 holeId = holeId - row2.length;
+                System.out.println("Hole id: " + holeId);
                 holeId -=1; 
+                System.out.println("Hole id: " + holeId);
 
                 if(holeId < 0){
                     row = 0; 
-                    col = row1.length - 1; 
+                    col = 0; 
                 }else{
                     row = 1;
                     col = holeId;
