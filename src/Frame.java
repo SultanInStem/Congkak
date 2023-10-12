@@ -4,39 +4,40 @@ import java.awt.GridLayout;
 import javax.swing.JLabel;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import Constants.Const;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
+import java.awt.Toolkit; 
 import java.awt.Font;
 public class Frame extends JFrame {
-    private final String FONT_STYLE = "Serif";
-    private final int WINDOW_WIDTH = 600; 
-    private final int WINDOW_HEIGHT = 500;
 
     private final int HEADER_HEIGHT = 100;
-    private final Color HEADER_COLOR = new Color(68,83,193);
 
-    private final Color FOOTER_COLOR = new Color(68,83,193);
     private final int FOOTER_HEIGHT = 100; 
 
     private final int SIDEBAR_WIDTH = 100;
-    private final Color MAIN_GRID_COLOR = new Color(1,1,1);
 
     private final int HEDER_LABEL_WIDTH = 200;
     private final int HEADER_LABEL_HEIGHT = 80;
     private final int HEADER_LABEL_FONT_SIZE = 20;
 
+    private final int FOOTER_LABEL_WIDTH = 200; 
+    private final int FOOTER_LABEL_HEIGHT = 80;
+    private final int FOOTER_LABEL_FONT_SIZE = 20;
 
-    House sidebarLeft; 
-    House sidebarRight;
-    JPanel mainGrid; 
-    JLabel headerLabel;
-
-    Player player1; 
-    Player player2;
+    private House sidebarLeft; 
+    private House sidebarRight;
+    private JPanel mainGrid; 
+    private JLabel headerLabel;
+    private JLabel mainFooterLabel;
+    private Player player1; 
+    private Player player2;
+    private WinnerWindow winnerWindow;
 
     public Frame(Player player1, Player player2){
         this.setVisible(true);
-        this.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setSize((int)screenSize.getWidth(), (int)screenSize.getHeight());
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(new BorderLayout());
         this.setTitle("Congkak game!");
@@ -48,25 +49,31 @@ public class Frame extends JFrame {
         header.setLayout(new GridBagLayout());
         header.setOpaque(true);
         header.setVisible(true);
-        header.setBackground(HEADER_COLOR);
+        header.setBackground(Const.mainBackgroundColor);
         header.setPreferredSize(new Dimension(this.getWidth(), HEADER_HEIGHT));
         headerLabel = new JLabel("Player");
         headerLabel.setVisible(true);
         headerLabel.setOpaque(false);
-        headerLabel.setFont(new Font(FONT_STYLE, Font.BOLD, HEADER_LABEL_FONT_SIZE));
+        headerLabel.setFont(new Font(Const.FontStyle, Font.BOLD, HEADER_LABEL_FONT_SIZE));
         headerLabel.setPreferredSize(new Dimension(HEDER_LABEL_WIDTH, HEADER_LABEL_HEIGHT));
         headerLabel.setHorizontalAlignment(JLabel.CENTER);
         header.add(headerLabel);
+
         JPanel footer = new JPanel();
-        footer.setBackground(FOOTER_COLOR);
+        footer.setBackground(Const.mainBackgroundColor);
         footer.setOpaque(true);
         footer.setVisible(true);
         footer.setPreferredSize(new Dimension(this.getWidth(), FOOTER_HEIGHT));
+        mainFooterLabel = new JLabel(); 
+        mainFooterLabel.setOpaque(true);
+        mainFooterLabel.setVisible(true);
+        mainFooterLabel.setFont(new Font(Const.FontStyle, Font.BOLD, FOOTER_LABEL_FONT_SIZE)); 
+        mainFooterLabel.setSize(new Dimension(FOOTER_LABEL_WIDTH, FOOTER_LABEL_HEIGHT));
         // CREATE MAIN GRID
         mainGrid = new JPanel();
         mainGrid.setVisible(true);
         mainGrid.setOpaque(true);
-        mainGrid.setBackground(MAIN_GRID_COLOR);
+        mainGrid.setBackground(Const.mainBackgroundColor);
         mainGrid.setLayout(new GridLayout(2,7));
         // SET UP SIDEBARS AKA HOMES 
         sidebarLeft = new House(player1.getPlayerDefaultColor()); 
@@ -74,6 +81,9 @@ public class Frame extends JFrame {
 
         sidebarRight = new House(player2.getPlayerDefaultColor());
         sidebarRight.setPreferredSize(new Dimension(SIDEBAR_WIDTH, this.getHeight()));
+
+        // set up winner-window 
+        winnerWindow = new WinnerWindow();
 
         // ADDING COMPONENTS TO THE FRAME
         this.add(header, BorderLayout.NORTH);
@@ -86,10 +96,12 @@ public class Frame extends JFrame {
         for(int j = 0; j < board[0].length; j++){
             if(turnPlayer1){
                 this.headerLabel.setText("Player 1");
+                this.headerLabel.setForeground(player1.getPlayerDefaultColor());
                 board[0][j].showBtn();
                 board[1][j].hideBtn();
             }else{
                 this.headerLabel.setText("Player 2");
+                this.headerLabel.setForeground(player2.getPlayerDefaultColor());
                 board[1][j].showBtn();
                 board[0][j].hideBtn();
             }
@@ -114,6 +126,7 @@ public class Frame extends JFrame {
 
             for(int i = 0; i < board.length; i++){
                 for(int j = 0; j < board[i].length; j++){
+                 
                     if(holeId < 0){
                         // means we must put marbles into our house 
                         if(turnPLayer1){
@@ -141,6 +154,20 @@ public class Frame extends JFrame {
                 }
             }
         }
+        this.repaint();
+    }
+    public void displayWinner(){
+        this.remove(mainGrid);
+        this.add(winnerWindow, BorderLayout.CENTER);
+    }
+    public void displayError(String errMessage, Hole[][]board){
+        for(int i = 0; i < board.length; i++){
+            for(int j = 0; j < board[i].length; j++){
+                mainGrid.add(board[i][j]);
+            }
+        }
+        this.mainFooterLabel.setText(errMessage);
+        this.mainFooterLabel.setForeground(Color.RED);
         this.repaint();
     }
 }

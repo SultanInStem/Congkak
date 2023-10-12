@@ -1,11 +1,12 @@
-import java.awt.Color;
+import Constants.Const;
+
 public class Game {
     private final int REFRESH_DELAY = 1000;
     private boolean isPlayer1 = true;
     private boolean isPlaying;
     private Frame frame;
-    Player player1 = new Player(1, Color.RED);
-    Player player2 = new Player(2, Color.BLUE);
+    Player player1 = new Player(1, Const.playerOneColor);
+    Player player2 = new Player(2, Const.playerTwoColor);
     private Hole[] row1 = new Hole[7];
     private Hole[] row2 = new Hole[7];
     private Hole[][] board = {row1, row2};
@@ -22,13 +23,17 @@ public class Game {
         int col;
         int row; 
         while(isPlaying){
+            if(isGameOver(isPlayer1)){ // check if the game is over 
+                frame.displayWinner();
+            }
+
+
             if(isPlayer1){
                 // GAME LOGIC FOR PLAYER 1
                 frame.display(board, isPlayer1, false, -1);
                 holeId = takeInput(isPlayer1);
           
                 hole = row1[holeId];
-                System.out.println("Player1 picks hole with id: " + hole.getId());
 
                 marbles = hole.getMarbles(); 
                 player1.setCurrentMarbles(marbles);
@@ -96,7 +101,7 @@ public class Game {
                     try{
                         Thread.sleep(this.REFRESH_DELAY);
                     }catch(InterruptedException e){
-                        // HANDLE EXCEPTION 
+                        System.exit(1);
                     }
                 }
 
@@ -156,9 +161,9 @@ public class Game {
                         frame.display(board, isPlayer1, true, board[row][col].getId());
                     }
 
-                    System.out.println("Row: " + row + " Col: " + col);
-                    System.out.println(player2.toString());
-                    System.out.println("---------------");
+                    // System.out.println("Row: " + row + " Col: " + col);
+                    // System.out.println(player2.toString());
+                    // System.out.println("---------------");
                     if(row == 1 && col > 0){
                         col -= 1; 
                     }else if(row == 1 && col == 0){
@@ -177,7 +182,7 @@ public class Game {
                     try{
                         Thread.sleep(REFRESH_DELAY);
                     }catch(InterruptedException e){
-                        // HANDLE THE EXCEPTION
+                        System.exit(1);
                     }
                 }
                 isPlayer1 = !isPlayer1;
@@ -203,6 +208,7 @@ public class Game {
                     }else{
                         // IF USER TRIES TO TAKE MARBLES FROM AN EMPTY HOLE
                         System.out.println("INVALID INPUT");
+                        frame.displayError("Invalid input!!!", board);
                         hole.setIsChosen(false);
                         break;
                     }
@@ -210,6 +216,26 @@ public class Game {
             }
         }
         return id; 
+    }
+
+    // CHECK THE STATE OF THE GAME TO DETERMINE A WINNER 
+    public boolean isGameOver(boolean isPlayer1){
+        int totalMarbles = 0; 
+        int playerMarbles = 0; 
+        for(int i = 0; i < board.length; i++){
+            for(int j = 0; j < board[i].length; j++){
+                // 1 - if user has no marbles in their holes during their turn 
+                if(isPlayer1 && i == 0){
+                    playerMarbles += board[i][j].getMarbles();
+                }else if(!isPlayer1 && i == 1){
+                    playerMarbles += board[i][j].getMarbles();
+                }
+                // 2 - if there are no marbles left at all 
+                totalMarbles += board[i][j].getMarbles();
+            }
+        }
+        if(playerMarbles == 0 || totalMarbles == 0) return true; 
+        return false;
     }
 
     // SETS UP THE BOARD OF HOLES 
