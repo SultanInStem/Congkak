@@ -6,10 +6,11 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridBagLayout;
 
+import Constants.Const;
 import javax.swing.JButton;
 public class Hole extends JPanel{
-    private Color holeBg = new Color(123,13,67);
     private int marbles; 
     private boolean isChosen;
     private boolean isBtnHidden;
@@ -21,7 +22,7 @@ public class Hole extends JPanel{
     private JPanel buttonContainer;
     private int BUTTON_CONTAINER_HEIGHT = 50; 
 
-    JLabel tempLabel;
+    JLabel marblesLabel;
     public Hole(boolean isBtnHidden, int id){
         // SET UP THE NON-VISUAL COMPONENTS 
         this.isChosen = false; 
@@ -31,21 +32,22 @@ public class Hole extends JPanel{
         // SET UP THE VISUAL COMPONENTS 
         this.setVisible(true);
         this.setOpaque(true);
-        this.setBackground(this.holeBg);
+        this.setBackground(Const.defaultHoleColor);
         this.setBorder(BorderFactory.createEtchedBorder());
         this.setLayout(new BorderLayout());
         
         marbleContainer = new JPanel();
         marbleContainer.setVisible(true);
         marbleContainer.setPreferredSize(new Dimension(this.getWidth(), MARBLE_CONTAINER_HEIGHT));
-        tempLabel = new JLabel();
-        tempLabel.setSize(new Dimension(200, 50)); // temp code
-        tempLabel.setText("" + this.marbles);
-        tempLabel.setFont(new Font("Sarif", Font.BOLD, 20));
-        tempLabel.setOpaque(true);
+        marbleContainer.setLayout(new GridBagLayout());
+        marblesLabel = new JLabel();
+        marblesLabel.setSize(new Dimension(200, 50)); // temp code
+        marblesLabel.setText("" + this.marbles);
+        marblesLabel.setFont(new Font(Const.FontStyle, Font.BOLD, 25));
+        marblesLabel.setOpaque(false);
 
 
-        marbleContainer.add(tempLabel); 
+        marbleContainer.add(marblesLabel); 
         buttonContainer = new JPanel();
         buttonContainer.setVisible(true);
         buttonContainer.setPreferredSize(new Dimension(this.getWidth(), BUTTON_CONTAINER_HEIGHT));
@@ -87,14 +89,14 @@ public class Hole extends JPanel{
 
     // VISUAL METHODS 
     public void hightLight(){
-        this.marbleContainer.setBackground(holeBg);
+        this.marbleContainer.setBackground(Const.iterationHighlightColor);
         this.repaint();
     }
     public void repaintMarbles(){
-        this.tempLabel.setText(""+ this.marbles);
-        this.tempLabel.setSize(new Dimension(200, 50)); // temp code
-        this.marbleContainer.remove(this.tempLabel);
-        this.marbleContainer.add(tempLabel);
+        this.marblesLabel.setText(""+ this.marbles);
+        this.marblesLabel.setSize(new Dimension(200, 50)); // temp code
+        this.marbleContainer.remove(this.marblesLabel);
+        this.marbleContainer.add(marblesLabel);
         this.marbleContainer.repaint();
     }
     public void resetBgColor(){
