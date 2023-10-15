@@ -68,6 +68,7 @@ public class Frame extends JFrame {
         mainFooterLabel.setVisible(true);
         mainFooterLabel.setFont(new Font(Const.FontStyle, Font.BOLD, FOOTER_LABEL_FONT_SIZE)); 
         mainFooterLabel.setSize(new Dimension(FOOTER_LABEL_WIDTH, FOOTER_LABEL_HEIGHT));
+        footer.add(mainFooterLabel);
         // CREATE MAIN GRID
         mainGrid = new JPanel();
         mainGrid.setVisible(true);
@@ -117,6 +118,7 @@ public class Frame extends JFrame {
     public void display(Hole[][] board, boolean turnPLayer1, boolean isDynamic, int holeId){    
         this.remove(winnerWindow);  
         this.remove(mainGrid);
+        this.mainFooterLabel.setText("");
         mainGrid.removeAll();
         this.add(mainGrid, BorderLayout.CENTER); 
         if(isDynamic){

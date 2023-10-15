@@ -224,8 +224,7 @@ public class Game {
                         break;
                     }else{
                         // IF USER TRIES TO TAKE MARBLES FROM AN EMPTY HOLE
-                        System.out.println("INVALID INPUT");
-                        frame.displayError("Invalid input!!!", board);
+                        frame.displayError("The hole is empty, choose another one!", board);
                         hole.setIsChosen(false);
                         break;
                     }
