@@ -1,7 +1,7 @@
 import Constants.Const;
 
 public class Game {
-    private final int REFRESH_DELAY = 800;
+    private final int REFRESH_DELAY = 1000;
     private boolean isPlayer1 = true;
     private boolean isPlaying;
     private Frame frame;
@@ -25,7 +25,19 @@ public class Game {
         while(isPlaying){
             if(isGameOver(isPlayer1)){ // check if the game is over 
                 frame.displayWinner();
-                break;
+                String action = frame.getWinnerWindowAction();
+                while(action.length() < 1){
+                    action = frame.getWinnerWindowAction();
+                }             
+                if(action.equals("q")){
+                    isPlaying = false; 
+                    System.exit(0);
+                }else if(action.equals("p")){
+                    isPlaying = true; 
+                    isPlayer1 = true;
+                    gameReset();
+                    continue;
+                }
             }
 
 
@@ -33,6 +45,7 @@ public class Game {
                 // GAME LOGIC FOR PLAYER 1
                 frame.display(board, isPlayer1, false, -1);
                 holeId = takeInput(isPlayer1);
+                // holeId = autoPlay(isPlayer1);
           
                 hole = row1[holeId];
 
@@ -111,6 +124,7 @@ public class Game {
                 // GAME LOGIC FOR PLAYER 2
                 frame.display(board, isPlayer1, false, -1);
                 holeId = takeInput(isPlayer1); 
+                // holeId = autoPlay(isPlayer1);
                 hole = row2[holeId - row2.length]; 
 
                 marbles = hole.getMarbles(); 
@@ -252,5 +266,27 @@ public class Game {
                 id+=1;
             }
         }
+    }
+    public void gameReset(){
+        this.createBoard(); 
+        frame.resetWInnerBtn();
+        this.player1.setCurrentMarbles(0);
+        this.player2.setCurrentMarbles(0);
+        this.player1.setHouseMarbles(0);
+        this.player2.setHouseMarbles(0);
+    }
+
+    public int autoPlay(boolean isPLayer1){
+        int i = isPLayer1 ? 0 : 1; 
+        int id = -1;
+        System.out.println("Auto play picks...");
+        while(id < 0){
+            for(int j = 0; j < board[i].length; j++){
+                if(!board[i][j].isEmpty()){
+                    return board[i][j].getId();
+                }
+            }
+        }
+        return id;
     }
 }

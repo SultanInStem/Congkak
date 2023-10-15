@@ -12,6 +12,9 @@ public class Player extends JPanel{
         this.TOTAL_MARBLES= 0;
     }
     // NON-VISUAL METHODS
+    public void setHouseMarbles(int marbles){
+        this.TOTAL_MARBLES = marbles;
+    }
     public void incrementHouseMarbles(){
         this.TOTAL_MARBLES += 1;
     }

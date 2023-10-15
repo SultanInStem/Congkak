@@ -114,10 +114,13 @@ public class Frame extends JFrame {
             }
         }
     }
-    public void display(Hole[][] board, boolean turnPLayer1, boolean isDynamic, int holeId){       
+    public void display(Hole[][] board, boolean turnPLayer1, boolean isDynamic, int holeId){    
+        this.remove(winnerWindow);  
+        this.remove(mainGrid);
+        mainGrid.removeAll();
+        this.add(mainGrid, BorderLayout.CENTER); 
         if(isDynamic){
             // TEMP CODE ----
-
             // RESET BUTTONS AND COLORS 
             resetHoles(board);
             this.sidebarLeft.setBackground(player1.getPlayerDefaultColor());
@@ -153,11 +156,27 @@ public class Frame extends JFrame {
                 }
             }
         }
+        this.revalidate();
         this.repaint();
     }
     public void displayWinner(){
         this.remove(mainGrid);
+        String message;
+        Color fontColor; 
+        if(player1.getTotalMarbles() > player2.getTotalMarbles()){
+            message = "PLAYER 1 WON";
+            fontColor = player1.getPlayerDefaultColor();
+        }else if(player1.getTotalMarbles() < player2.getTotalMarbles()){
+            message = "PLAYER 2 WON"; 
+            fontColor = player2.getPlayerDefaultColor();
+        }else{
+            message = "IT'S A DRAW";
+            fontColor = Const.drawFontColor;
+        }
+        winnerWindow.showOutcome(message, fontColor);
+        System.out.println("ADDING THE RESULT WINDOW");
         this.add(winnerWindow, BorderLayout.CENTER);
+        this.revalidate();
         this.repaint();
     }
     public void displayError(String errMessage, Hole[][]board){
@@ -168,6 +187,13 @@ public class Frame extends JFrame {
         }
         this.mainFooterLabel.setText(errMessage);
         this.mainFooterLabel.setForeground(Color.RED);
+        this.revalidate();
         this.repaint();
+    }
+    public String getWinnerWindowAction(){
+        return this.winnerWindow.getAction();
+    }
+    public void resetWInnerBtn(){
+        this.winnerWindow.resetAction();
     }
 }

@@ -26,7 +26,7 @@ public class Hole extends JPanel{
     public Hole(boolean isBtnHidden, int id){
         // SET UP THE NON-VISUAL COMPONENTS 
         this.isChosen = false; 
-        this.marbles = 7; 
+        this.marbles = 1; 
         this.id = id;
         this.isBtnHidden = isBtnHidden;
         // SET UP THE VISUAL COMPONENTS 
