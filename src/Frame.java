@@ -132,10 +132,10 @@ public class Frame extends JFrame {
                     if(holeId < 0){
                         // means we must put marbles into our house 
                         if(turnPLayer1){
-                            this.sidebarLeft.setBackground(new Color(139, 0, 0));;
+                            this.sidebarLeft.setBackground(player1.getDarkColor());
                             this.sidebarLeft.showMarbles(player1.getTotalMarbles());
                         }else if(!turnPLayer1){
-                            this.sidebarRight.setBackground(new Color(0, 0, 139));;
+                            this.sidebarRight.setBackground(player2.getDarkColor());
                             sidebarRight.showMarbles(player2.getTotalMarbles());
                         }
                      

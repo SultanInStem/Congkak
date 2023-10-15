@@ -5,10 +5,15 @@ public class Player extends JPanel{
     private int TOTAL_MARBLES;  // marbles that we put into the houses 
     private int currentMabrles; // dummy marbles 
     private Color defaultColor;
+    private Color darkerColor;
     
     public Player(int id, Color color){
         this.id = id; 
         this.defaultColor = color;
+        int red = this.defaultColor.getRed() - 10;
+        int blue = this.defaultColor.getBlue() - 10; 
+        int green = this.defaultColor.getGreen() - 10;
+        this.darkerColor = new Color(red, green, blue);
         this.TOTAL_MARBLES= 0;
     }
     // NON-VISUAL METHODS
@@ -36,5 +41,8 @@ public class Player extends JPanel{
     // VISUAL METHODS 
     public Color getPlayerDefaultColor(){
         return this.defaultColor;
+    }
+    public Color getDarkColor(){
+        return this.darkerColor;
     }
 }
